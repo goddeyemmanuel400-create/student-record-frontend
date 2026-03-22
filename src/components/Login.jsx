@@ -7,7 +7,7 @@ function Login ({setIsLoggedIn }) {
     const handleLogin = (e) => {
         e.preventDefault();
 
-        if (username === "admin" && password === "1234") {
+        if (username === "DaMin" && password === "Em101") {
             localStorage.setItem("isLoggedIn", "true");
             setIsLoggedIn(true);
         } else {
