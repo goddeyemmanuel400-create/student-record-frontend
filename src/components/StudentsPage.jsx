@@ -3,6 +3,8 @@ import StudentTable from "./StudentTable";
 import Stats from "./Stats";
 import * as XLSX from "xlsx";
 import {saveAs} from "file-saver";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 function StudentsPage({
     students, 
@@ -30,6 +32,42 @@ function StudentsPage({
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
             saveAs(data, "students.xlsx");
         };
+        const downloadPDF = () => {
+            const  doc = new jsPDF();
+            doc.setFontSize(18);
+            doc.text("Student Result Report", 14, 22);
+            doc.setFontSize(11);
+            doc.setTextColor(100);
+            doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 14, 30);
+            const tableColumn = ["Name", "Math", "English", "Science", "Total", "Average", "Grade"];
+            const tableRows = students.map(student => {
+                const total = Number(student.math) + Number(student.english) + Number(student.science);
+                const average = (total /3).toFixed(1); 
+                let grade = "F";
+                if (average >= 70) grade = "A";
+                else if (average >= 60) grade = "B";
+                else if (average >= 50) grade = "C";
+                else if (average >= 40) grade = "D";
+
+                return[
+                student.name,
+                student.math,
+                student.english,
+                student.science,
+                total,
+                average,
+                grade
+            ]
+        });
+            autoTable(doc,{
+                head: [tableColumn],
+                body: tableRows,
+                startY: 35,
+                them:'grid',
+                headStyles: { fillColor: [37, 99, 235] }
+            });
+            doc.save("Student_Results.pdf");
+        };
 
     
          
@@ -42,6 +80,12 @@ function StudentsPage({
                     className="bg-green-600 text-white px-4 py-2 
                     rounded hover:bg-green-700 transition">
                         Export to Excel
+                    </button>
+                    <button 
+                    onClick={downloadPDF}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700
+                    transition flex items-center gap-2 mb-4">
+                        <span></span>Download Results PDF
                     </button>
                 </div>
                 <StudentForm 
