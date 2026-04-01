@@ -67,49 +67,62 @@
     }
     return (
         <form onSubmit={handleSubmit}
-         className="bg-white p-6 rounded-lg shadow mb-6">
-            <h2 className="text-xl font-bold mb-4"> {editIndex !== null ?
+         className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow mb-6">
+            <h2 className="text-lg sm:text-xl font-bold mb-4 text-gray-900 dark:text-white"> {editIndex !== null ?
              "Edit Student" : "Add Student"}</h2>
-             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <input
-            type="text"
-            placeholder="Name"
-            className="border p-2 rounded"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            />
-            <input
-            type="number"
-            placeholder="Math"
-            className="border p-2 rounded"
-            value={math}
-            min="0"
-            max="100"
-            onChange={(e) => setMath (e.target.value)}
-            />
-            <input
-            type="number"
-            placeholder="English"
-            className="border p-2 rounded"
-            value={english}
-            min="0"
-            max="100"
-            onChange={(e) => setEnglish(e.target.value)}
-            />
-            <input
-            type="number"
-            placeholder="Science"
-            className="border p-2 rounded"
-            value={science}
-            min="0"
-            max="100"
-            onChange={(e) => setScience(e.target.value)}
-            />
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                <input
+                type="text"
+                placeholder="Enter student name"
+                className="w-full border border-gray-300 dark:border-gray-600 p-3 sm:p-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                />
             </div>
-            <button type="submit" className=" mt-4 bg-blue-600
-             text-white px-6 py-2 rounded hover:bg-blue-700">
-                {editIndex !== null ? "Update Student" : "Add Student"}
-            </button>
+            <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Math Score</label>
+                <input
+                type="number"
+                placeholder="0-100"
+                className="w-full border border-gray-300 dark:border-gray-600 p-3 sm:p-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                value={math}
+                min="0"
+                max="100"
+                onChange={(e) => setMath (e.target.value)}
+                />
+            </div>
+            <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">English Score</label>
+                <input
+                type="number"
+                placeholder="0-100"
+                className="w-full border border-gray-300 dark:border-gray-600 p-3 sm:p-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                value={english}
+                min="0"
+                max="100"
+                onChange={(e) => setEnglish(e.target.value)}
+                />
+            </div>
+            <div className="space-y-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Science Score</label>
+                <input
+                type="number"
+                placeholder="0-100"
+                className="w-full border border-gray-300 dark:border-gray-600 p-3 sm:p-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                value={science}
+                min="0"
+                max="100"
+                onChange={(e) => setScience(e.target.value)}
+                />
+            </div>
+            </div>
+            <div className="mt-6 flex justify-end">
+                <button type="submit" className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white px-6 py-3 sm:px-6 sm:py-2 rounded-lg font-medium transition-colors text-sm sm:text-base min-h-[44px]">
+                    {editIndex !== null ? "Update Student" : "Add Student"}
+                </button>
+            </div>
         </form>
     )
  }

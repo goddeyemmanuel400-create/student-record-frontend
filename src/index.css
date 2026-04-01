@@ -1,2 +1,54 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #ffffff;
+    color: #111827;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+body.dark {
+    background-color: rgb(17, 24, 39); /* gray-900 */
+    color: #f8fafc;
+}
+
+html, body, #root {
+    min-height: 100%;
+    width: 100%;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 640px) {
+    body {
+        font-size: 13px;
+    }
+
+    /* Ensure buttons are touch-friendly */
+    button {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Improve input touch targets */
+    input, select, textarea {
+        min-height: 44px;
+    }
+
+    /* Better form spacing on mobile */
+    form {
+        margin-bottom: 1rem;
+    }
+}
+
+
  

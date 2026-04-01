@@ -12,8 +12,9 @@ function App() {
 
   const [students, setStudents] = useState ([]);
 
-   const [page, setPage] = useState("dashboard")
-   
+  const [page, setPage] = useState("dashboard")
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  
   const [search, setSearch] = useState("")
   const [sortType, setSortType] = useState("name")
   
@@ -50,18 +51,14 @@ const studentsPerPage = 5;
       }
     } catch (err) {
       console.error("Error deleting student:", err);
-    };
-{
-    const updatedStudents = students.filter((_, i) => i !== index)
-    setStudents(updatedStudents);
-    setEditIndex(null);
-}
+    }
+
   }
   const editStudent = (id) => {
     const studentToEdit = students.find((s) => s._id === id);
     setPage("students")
     setSearch(studentToEdit.name)
-    setEditIndex(id);
+    setEditIndex(id); 
   }
   const [editIndex, setEditIndex] = useState(null);
 
@@ -85,7 +82,26 @@ const studentsPerPage = 5;
         }
       };
   
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(() => {
+      const saved = localStorage.getItem("darkMode");
+      return saved === "true";
+    });
+
+    useEffect (() => {
+       
+        const root = document.documentElement;
+        const body = document.body;
+        
+        if (darkMode) {
+          root.classList.add("dark");
+          body.classList.add("dark");
+      } else {
+        root.classList.remove("dark");
+          body.classList.remove("dark");
+      }
+      localStorage.setItem("darkMode", darkMode.toString());
+    
+    }, [darkMode]);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -132,22 +148,32 @@ const totalPages = Math.ceil(students.length / studentsPerPage);
   if (!isLoggedIn) {
     return <Login setIsLoggedIn={setIsLoggedIn} />
   }
+  
   return (
-    <div className={darkMode ? "dark" : ""}>
-    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900">
-      <Sidebar page={page} setPage={setPage} />
-      <div className="flex-1 p-6">
-        <div className="flex justify-between mb-4">
-        <button onClick={() => setDarkMode(!darkMode)}
-         className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded">
-          {darkMode ? "Light Mode" : "Dark Mode"}
-        </button>
+    
+    <div className="flex min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
+      <Sidebar page={page} setPage={setPage} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <div className="flex-1 p-4 sm:p-6 md:ml-64">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center justify-between mb-4 gap-2">
+          <button
+            className="md:hidden bg-blue-600 text-white px-3 py-2 rounded-lg hover:bg-blue-700 transition text-sm sm:text-base"
+            onClick={() => setIsSidebarOpen(prev => !prev)}
+          >
+            Menu
+          </button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button onClick={() => {setDarkMode(prev => !prev);}}
+              className="bg-gray-200 dark:bg-gray-700 text-black dark:text-white px-3 sm:px-4 py-2 rounded text-sm sm:text-base">
+              {darkMode ? "Dark Mode" : "Light Mode"}
+            </button>
+
         <button onClick={() => {localStorage.removeItem("isLoggedIn");
         setIsLoggedIn(false);
-        }} className="bg-red-500 text-white px-4 py-2 rounded">
+        }} className="bg-red-500 text-white px-3 sm:px-4 py-2 rounded text-sm sm:text-base">
           Logout
         </button>
       </div>
+    </div>
       
         {page === "dashboard" && <Dashboard students={students}
          chartData={chartData} 
@@ -182,9 +208,11 @@ const totalPages = Math.ceil(students.length / studentsPerPage);
         )}
       </div>
     </div>
-  </div>
-
+  
+ 
   )
+
 }
+
       
 export default App;
